@@ -28,39 +28,58 @@
 
 
 
-name: Cross Browser Tests
+#name: Cross Browser Tests
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#
+#jobs:
+#
+#  browser-test:
+#
+#    runs-on: ubuntu-latest
+#
+#    strategy:
+#      matrix:
+#        browser: [chrome, firefox]
+#
+#    steps:
+#
+#      - name: Checkout Code
+#        uses: actions/checkout@v4
+#
+#      - name: Setup Java
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: temurin
+#          java-version: 17
+#
+#      - name: Setup Chrome
+#        uses: browser-actions/setup-chrome@v1
+#
+#      - name: Setup Firefox
+#        uses: browser-actions/setup-firefox@v1
+#
+#      - name: Run Tests
+#        run: mvn test -Dbrowser=${{ matrix.browser }}
+
+
+name: Selenium Tests
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
-
-  browser-test:
-
+  test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        browser: [chrome, firefox]
-
     steps:
+      - uses: actions/checkout@v4
 
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1
-
-      - name: Setup Firefox
-        uses: browser-actions/setup-firefox@v1
+      - name: Build Docker Image
+        run: docker build -t selenium-tests .
 
       - name: Run Tests
-        run: mvn test -Dbrowser=${{ matrix.browser }}
+        run: docker run selenium-tests

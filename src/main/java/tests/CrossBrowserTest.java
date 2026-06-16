@@ -7,41 +7,46 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.Test;
 
-public class CrossBrowserTest {
+class ParallelTest {
 
     @Test
     public void launchBrowser() {
 
-        String browser =
-                System.getProperty("browser", "chrome");
+        // Get browser name from GitHub Actions
+        String browser = System.getProperty("browser", "chrome");
 
         WebDriver driver;
 
-        if(browser.equalsIgnoreCase("chrome")) {
+        if (browser.equalsIgnoreCase("chrome")) {
 
-            ChromeOptions options =
-                    new ChromeOptions();
+            ChromeOptions options = new ChromeOptions();
 
+            // Required for GitHub Actions / Linux CI
             options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
 
             driver = new ChromeDriver(options);
 
         } else {
 
-            FirefoxOptions options =
-                    new FirefoxOptions();
+            FirefoxOptions options = new FirefoxOptions();
 
+            // Run Firefox without UI
             options.addArguments("--headless");
 
             driver = new FirefoxDriver(options);
         }
 
+        // Open website
         driver.get("https://www.google.com");
 
-        System.out.println(
-                browser + " Title : "
-                        + driver.getTitle());
+        // Print information
+        System.out.println("Browser : " + browser);
+        System.out.println("Title : " + driver.getTitle());
+        System.out.println("URL : " + driver.getCurrentUrl());
 
+        // Close browser
         driver.quit();
     }
 }

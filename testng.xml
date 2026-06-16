@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Main Suite -->
+<suite name="CrossBrowserSuite" parallel="tests" thread-count="2">
+
+    <!-- Chrome Test -->
+    <test name="ChromeTest">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="tests.ParallelTest"/>
+        </classes>
+    </test>
+
+    <!-- Firefox Test -->
+    <test name="FirefoxTest">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="tests.ParallelTest"/>
+        </classes>
+    </test>
+
+</suite>
+
